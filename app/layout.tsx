@@ -13,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>Relief-Zone - Psychotherapy Application</title>
+        <title>Hakim - Psychotherapy Application</title>
         <meta name="description" content="Psychotherapy patient management and tracking application" />
       </head>
       <body className="font-sans antialiased">

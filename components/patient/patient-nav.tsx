@@ -34,11 +34,13 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
   }
 
   return (
-    <nav className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-white">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-white/55">Fewash wellness</p>
-          <h1 className="text-xl font-semibold">Relief-Zone</h1>
+    <nav className="bg-white shadow-md">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-blue-600">Hakim</h1>
+          <span className="text-sm text-gray-600 ml-2">
+            {t('patient.dashboard')}
+          </span>
         </div>
 
         <div className="flex items-center gap-2">
