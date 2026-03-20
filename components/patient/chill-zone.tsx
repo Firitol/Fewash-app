@@ -49,8 +49,8 @@ export default function ChillZone({ language }: ChillZoneProps) {
 
   const current = useMemo(() => {
     if (!resources.length) return null
-    return resources.find((resource) => resource.id === (selectedId ?? playing)) ?? resources[0]
-  }, [playing, resources, selectedId])
+    return resources.find((resource) => resource.id === playing) ?? resources[0]
+  }, [playing, resources])
 
   if (loading) return <div>{t('common.loading')}</div>
 
@@ -76,10 +76,7 @@ export default function ChillZone({ language }: ChillZoneProps) {
               <Button
                 size="icon"
                 className="h-32 w-32 rounded-full bg-white text-[#5b97ff] shadow-[0_20px_50px_rgba(255,255,255,0.35)] hover:bg-white"
-                onClick={() => {
-                  setSelectedId(current.id)
-                  setPlaying(playing === current.id ? null : current.id)
-                }}
+                onClick={() => setPlaying(playing === current.id ? null : current.id)}
               >
                 <Music2 className={`h-10 w-10 ${playing === current.id ? 'animate-pulse' : ''}`} />
               </Button>
@@ -90,7 +87,7 @@ export default function ChillZone({ language }: ChillZoneProps) {
             )}
 
             <div className="flex items-center justify-between gap-3">
-              <Button variant="ghost" className="rounded-full text-white transition-all hover:bg-white/10 hover:scale-[1.02]" onClick={() => { setSelectedId(current.id); setPlaying(current.id) }}>
+              <Button variant="ghost" className="rounded-full text-white hover:bg-white/10">
                 <RotateCcw className="mr-2 h-4 w-4" />
                 Restart
               </Button>
@@ -99,8 +96,8 @@ export default function ChillZone({ language }: ChillZoneProps) {
                   <Button
                     key={resource.id}
                     variant="ghost"
-                    onClick={() => { setSelectedId(resource.id); setPlaying(resource.id) }}
-                    className={`rounded-full border px-4 text-white transition-all hover:scale-[1.02] hover:bg-white/20 ${current.id === resource.id ? 'border-white/70 bg-white/20' : 'border-white/10 bg-white/10'}`}
+                    onClick={() => setPlaying(resource.id)}
+                    className={`rounded-full border px-4 text-white ${current.id === resource.id ? 'border-white/70 bg-white/20' : 'border-white/10 bg-white/10'}`}
                   >
                     {resource.title}
                   </Button>

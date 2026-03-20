@@ -46,11 +46,17 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
         </button>
 
         <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold text-blue-600">Hakim</h1>
+          <span className="text-sm text-gray-600 ml-2">
+            {t('patient.dashboard')}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2">
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full border border-white/10 bg-white/10 text-white transition-all hover:bg-white/15 hover:scale-[1.02]"
-            onClick={() => router.push('/patient/dashboard')}
+            className="rounded-full border border-white/10 bg-white/10 text-white hover:bg-white/15"
           >
             <Bell className="h-4 w-4" />
           </Button>
@@ -58,7 +64,7 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
           <Button
             variant="ghost"
             onClick={onLanguageToggle}
-            className="rounded-full border border-white/10 bg-white/10 px-3 text-white transition-all hover:bg-white/15 hover:scale-[1.02]"
+            className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15"
           >
             <Globe2 className="mr-2 h-4 w-4" />
             {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
@@ -66,7 +72,7 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rounded-full border border-white/10 bg-white/10 px-3 text-white transition-all hover:bg-white/15 hover:scale-[1.02]">
+              <Button variant="ghost" className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15">
                 <User className="mr-2 h-4 w-4" />
                 <span className="hidden sm:inline">{user?.fullName}</span>
               </Button>

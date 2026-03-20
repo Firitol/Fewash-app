@@ -119,7 +119,7 @@ export default function MoodLog({ userId, fullName }: MoodLogProps) {
             <Button
               onClick={handleSubmitMood}
               disabled={submitting}
-              className="mt-6 h-12 w-full rounded-full bg-white text-[#0e5fd8] shadow-[0_18px_38px_rgba(67,120,255,0.18)] transition-all hover:bg-white hover:scale-[1.01]"
+              className="mt-6 h-12 w-full rounded-full bg-white text-[#0e5fd8] shadow-[0_18px_38px_rgba(67,120,255,0.18)] hover:bg-white"
             >
               {submitting ? t('common.loading') : `${moodLabel} Submit`}
               <ChevronRight className="ml-1 h-4 w-4" />

@@ -107,7 +107,6 @@ export default function ActionsSection({ userId }: ActionsSectionProps) {
                   <Icon className="mb-8 h-8 w-8" />
                   <p className="text-2xl font-semibold">{item.title}</p>
                   <p className="mt-2 max-w-sm text-sm text-white/90">{item.description}</p>
-                  <button type="button" onClick={() => router.push('/patient/dashboard')} className="mt-4 inline-flex w-fit items-center rounded-full bg-white/20 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-white/30 hover:scale-[1.02]">Open tool</button>
                 </div>
               </CardContent>
             </Card>
@@ -120,7 +119,7 @@ export default function ActionsSection({ userId }: ActionsSectionProps) {
       ) : (
         <div className="space-y-3">
           {actions.map((action) => (
-            <Card key={action.id} className={`rounded-[1.6rem] border border-white/80 bg-white transition-all hover:-translate-y-0.5 hover:shadow-md ${action.status === 'completed' ? 'opacity-75' : ''}`}>
+            <Card key={action.id} className={`rounded-[1.6rem] border border-white/80 bg-white ${action.status === 'completed' ? 'opacity-75' : ''}`}>
               <CardContent className="p-4">
                 <div className="flex items-start gap-4">
                   <Checkbox checked={action.status === 'completed'} onCheckedChange={() => handleCompleteAction(action.id)} className="mt-1" />

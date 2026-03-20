@@ -78,7 +78,7 @@ export default function DashboardOverview({
         <div className="relative grid gap-6 lg:grid-cols-[1.5fr,0.9fr] lg:items-center">
           <div className="space-y-4">
             <Badge className="rounded-full bg-slate-900 px-4 py-1.5 text-white hover:bg-slate-900">
-              MindShift-inspired wellness hub
+              Hakim is MindShift-inspired app for wellness hub
             </Badge>
             <div className="space-y-2">
               <h2 className="text-3xl font-semibold tracking-tight text-slate-950 md:text-4xl">
@@ -158,7 +158,7 @@ export default function DashboardOverview({
       <section className="grid gap-4 lg:grid-cols-[1.2fr,0.8fr]">
         <Card className="border-white/70 bg-white/90 shadow-lg shadow-slate-200/50">
           <CardHeader>
-            <CardTitle className="text-xl">MindShift-style self-help toolkit</CardTitle>
+            <CardTitle className="text-xl">Hakim is self-help toolkit</CardTitle>
             <CardDescription>
               Inspired by common CBT support patterns such as thought journals, fear ladders,
               daily check-ins, and calming routines.
