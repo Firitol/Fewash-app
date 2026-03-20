@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Empty } from '@/components/ui/empty'
-import { Music, Clock, Zap } from 'lucide-react'
+import { Music2, RotateCcw } from 'lucide-react'
 
 interface ChillZoneProps {
   language: string
@@ -27,6 +26,7 @@ export default function ChillZone({ language }: ChillZoneProps) {
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
   const [playing, setPlaying] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchResources = async () => {
@@ -47,108 +47,68 @@ export default function ChillZone({ language }: ChillZoneProps) {
     fetchResources()
   }, [language])
 
-  const difficultyColor = (difficulty: string) => {
-    switch (difficulty) {
-      case 'beginner':
-        return 'bg-green-100 text-green-800'
-      case 'intermediate':
-        return 'bg-yellow-100 text-yellow-800'
-      case 'advanced':
-        return 'bg-red-100 text-red-800'
-      default:
-        return 'bg-gray-100 text-gray-800'
-    }
-  }
+  const current = useMemo(() => {
+    if (!resources.length) return null
+    return resources.find((resource) => resource.id === (selectedId ?? playing)) ?? resources[0]
+  }, [playing, resources, selectedId])
 
-  const typeIcon = (type: string) => {
-    switch (type) {
-      case 'meditation':
-        return '🧘'
-      case 'breathing_exercise':
-        return '💨'
-      case 'relaxation':
-        return '😌'
-      case 'mindfulness':
-        return '🧠'
-      default:
-        return '✨'
-    }
-  }
-
-  if (loading) {
-    return <div>{t('common.loading')}</div>
-  }
+  if (loading) return <div>{t('common.loading')}</div>
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-3xl font-bold mb-2">{t('chillZone.title')}</h2>
-        <p className="text-gray-600">{t('chillZone.subtitle')}</p>
+        <h2 className="text-2xl font-bold text-white">Guided Meditations</h2>
+        <p className="text-sm text-white/75">A soft, immersive player for breathing, relaxation, and mental vacation sessions.</p>
       </div>
 
-      {resources.length === 0 ? (
-        <Empty
-          icon="Music"
-          title={t('chillZone.noResourcesFound')}
-          description="No relaxation resources available at the moment"
-        />
+      {resources.length === 0 || !current ? (
+        <Empty icon="Music" title={t('chillZone.noResourcesFound')} description="No relaxation resources available at the moment" />
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {resources.map((resource) => (
-            <Card key={resource.id} className="hover:shadow-lg transition-shadow overflow-hidden">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="text-3xl">{typeIcon(resource.type)}</div>
-                  <Badge
-                    variant="secondary"
-                    className={difficultyColor(resource.difficulty_level)}
+        <Card className="overflow-hidden rounded-[2.2rem] border border-white/20 bg-[linear-gradient(180deg,#79c0ff_0%,#5da6ff_48%,#4c8ff9_100%)] text-white shadow-[0_28px_80px_rgba(65,132,255,0.35)]">
+          <CardContent className="space-y-6 p-6">
+            <div className="text-center">
+              <p className="text-sm text-white/75">Chill Zone</p>
+              <h3 className="mt-3 text-2xl font-medium">{current.title}</h3>
+              <p className="mt-2 text-sm text-white/75">Now playing · {current.duration_minutes} {t('chillZone.minutes')}</p>
+            </div>
+
+            <div className="mx-auto flex h-64 w-64 items-center justify-center rounded-full bg-[radial-gradient(circle,#ffffff_0%,#ffffff_40%,rgba(255,255,255,0.4)_41%,rgba(255,255,255,0.24)_58%,rgba(255,255,255,0.16)_74%,rgba(255,255,255,0.1)_100%)]">
+              <Button
+                size="icon"
+                className="h-32 w-32 rounded-full bg-white text-[#5b97ff] shadow-[0_20px_50px_rgba(255,255,255,0.35)] hover:bg-white"
+                onClick={() => {
+                  setSelectedId(current.id)
+                  setPlaying(playing === current.id ? null : current.id)
+                }}
+              >
+                <Music2 className={`h-10 w-10 ${playing === current.id ? 'animate-pulse' : ''}`} />
+              </Button>
+            </div>
+
+            {current.audio_url && playing === current.id && (
+              <audio src={current.audio_url} controls autoPlay className="w-full" onEnded={() => setPlaying(null)} />
+            )}
+
+            <div className="flex items-center justify-between gap-3">
+              <Button variant="ghost" className="rounded-full text-white transition-all hover:bg-white/10 hover:scale-[1.02]" onClick={() => { setSelectedId(current.id); setPlaying(current.id) }}>
+                <RotateCcw className="mr-2 h-4 w-4" />
+                Restart
+              </Button>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {resources.slice(0, 4).map((resource) => (
+                  <Button
+                    key={resource.id}
+                    variant="ghost"
+                    onClick={() => { setSelectedId(resource.id); setPlaying(resource.id) }}
+                    className={`rounded-full border px-4 text-white transition-all hover:scale-[1.02] hover:bg-white/20 ${current.id === resource.id ? 'border-white/70 bg-white/20' : 'border-white/10 bg-white/10'}`}
                   >
-                    {t(`chillZone.${resource.difficulty_level}`)}
-                  </Badge>
-                </div>
-                <CardTitle className="mt-3 text-lg">{resource.title}</CardTitle>
-                <CardDescription className="line-clamp-2">{resource.description}</CardDescription>
-              </CardHeader>
-
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4" />
-                    <span>{resource.duration_minutes} {t('chillZone.minutes')}</span>
-                  </div>
-                </div>
-
-                <Button
-                  className="w-full"
-                  onClick={() => setPlaying(playing === resource.id ? null : resource.id)}
-                  variant={playing === resource.id ? 'default' : 'outline'}
-                >
-                  {playing === resource.id ? (
-                    <>
-                      <Music className="mr-2 h-4 w-4 animate-spin" />
-                      {t('chillZone.pause')}
-                    </>
-                  ) : (
-                    <>
-                      <Music className="mr-2 h-4 w-4" />
-                      {t('chillZone.play')}
-                    </>
-                  )}
-                </Button>
-
-                {playing === resource.id && resource.audio_url && (
-                  <audio
-                    src={resource.audio_url}
-                    controls
-                    autoPlay
-                    className="w-full mt-2"
-                    onEnded={() => setPlaying(null)}
-                  />
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                    {resource.title}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       )}
     </div>
   )

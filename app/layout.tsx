@@ -1,20 +1,9 @@
 'use client'
 
-import type { Metadata } from 'next'
-import { Geist, Geist_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import { I18nextProvider } from 'react-i18next'
 import i18n from '@/lib/i18n'
 import './globals.css'
-
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
-
-// Note: Metadata cannot be used in client components
-// export const metadata: Metadata = {
-//   title: 'Relief-Zone - Psychotherapy Application',
-//   description: 'Psychotherapy patient management and tracking application',
-// }
 
 export default function RootLayout({
   children,

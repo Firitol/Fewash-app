@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogOut, Settings, User } from 'lucide-react'
+import { Bell, Globe2, LogOut, Settings, User } from 'lucide-react'
 
 interface PatientNavProps {
   user: any
@@ -34,24 +34,40 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
   }
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-blue-600">Relief-Zone</h1>
-          <span className="text-sm text-gray-600 ml-2">
-            {t('patient.dashboard')}
-          </span>
-        </div>
+    <nav className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-white">
+        <button
+          type="button"
+          onClick={() => router.push('/')}
+          className="text-left transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white/40 rounded-xl"
+        >
+          <p className="text-xs uppercase tracking-[0.3em] text-white/55">Fewash wellness</p>
+          <h1 className="text-xl font-semibold">Relief-Zone</h1>
+        </button>
 
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={onLanguageToggle}>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full border border-white/10 bg-white/10 text-white transition-all hover:bg-white/15 hover:scale-[1.02]"
+            onClick={() => router.push('/patient/dashboard')}
+          >
+            <Bell className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            onClick={onLanguageToggle}
+            className="rounded-full border border-white/10 bg-white/10 px-3 text-white transition-all hover:bg-white/15 hover:scale-[1.02]"
+          >
+            <Globe2 className="mr-2 h-4 w-4" />
             {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
-                <User className="h-5 w-5" />
+              <Button variant="ghost" className="rounded-full border border-white/10 bg-white/10 px-3 text-white transition-all hover:bg-white/15 hover:scale-[1.02]">
+                <User className="mr-2 h-4 w-4" />
                 <span className="hidden sm:inline">{user?.fullName}</span>
               </Button>
             </DropdownMenuTrigger>
