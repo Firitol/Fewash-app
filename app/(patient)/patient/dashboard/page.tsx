@@ -1,10 +1,8 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import PatientNav from '@/components/patient/patient-nav'
 import TreatmentPlans from '@/components/patient/treatment-plans'
@@ -12,12 +10,17 @@ import GoalsSection from '@/components/patient/goals-section'
 import ActionsSection from '@/components/patient/actions-section'
 import ChillZone from '@/components/patient/chill-zone'
 import MoodLog from '@/components/patient/mood-log'
+import DashboardOverview from '@/components/patient/dashboard-overview'
+import MindshiftToolkit from '@/components/patient/mindshift-toolkit'
+import ShareExperience from '@/components/patient/share-experience'
 
 export default function PatientDashboard() {
   const { t, i18n } = useTranslation()
   const router = useRouter()
   const [user, setUser] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [activeTab, setActiveTab] = useState('overview')
+  const [summary, setSummary] = useState({ plans: [], goals: [], actions: [], moodLogs: [] } as any)
 
   useEffect(() => {
     // Check authentication and get user data
@@ -30,6 +33,25 @@ export default function PatientDashboard() {
         }
         const userData = await response.json()
         setUser(userData)
+
+        const userId = userData?.userId
+        if (userId) {
+          const [plansRes, goalsRes, actionsRes, moodRes] = await Promise.all([
+            fetch(`/api/treatment-plans?userId=${userId}`),
+            fetch(`/api/goals?userId=${userId}`),
+            fetch(`/api/actions?userId=${userId}`),
+            fetch(`/api/mood-logs?userId=${userId}`),
+          ])
+
+          const [plans, goals, actions, moodLogs] = await Promise.all([
+            plansRes.ok ? plansRes.json() : [],
+            goalsRes.ok ? goalsRes.json() : [],
+            actionsRes.ok ? actionsRes.json() : [],
+            moodRes.ok ? moodRes.json() : [],
+          ])
+
+          setSummary({ plans, goals, actions, moodLogs })
+        }
       } catch (error) {
         router.push('/login')
       } finally {
@@ -44,6 +66,17 @@ export default function PatientDashboard() {
     i18n.changeLanguage(i18n.language === 'am' ? 'om' : 'am')
   }
 
+  const tabConfig = useMemo(() => ([
+    { value: 'overview', label: 'Overview' },
+    { value: 'toolkit', label: 'Toolkit' },
+    { value: 'plans', label: t('patient.myPlans') },
+    { value: 'goals', label: t('patient.myGoals') },
+    { value: 'actions', label: t('patient.myActions') },
+    { value: 'mood', label: t('patient.moodLog') },
+    { value: 'chill', label: t('patient.chillZone') },
+    { value: 'share', label: 'Share & stories' },
+  ]), [t])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -53,27 +86,47 @@ export default function PatientDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-[linear-gradient(135deg,#f8fbff_0%,#eef2ff_46%,#fdf2f8_100%)]">
       <PatientNav user={user} onLanguageToggle={toggleLanguage} />
 
-      <main className="container mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
-            {t('patient.dashboard')}
-          </h1>
-          <p className="text-gray-600 mt-2">
-            Welcome back, {user?.fullName}
-          </p>
+      <main className="container mx-auto space-y-8 px-4 py-8">
+        <div className="flex flex-col gap-3">
+          <div className="inline-flex w-fit items-center rounded-full border border-violet-200 bg-white/80 px-4 py-1 text-sm font-medium text-violet-700 shadow-sm">
+            Elevated self-help dashboard
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-slate-950 md:text-4xl">
+              {t('patient.dashboard')}
+            </h1>
+            <p className="mt-2 max-w-3xl text-slate-600">
+              A richer, more beautiful patient experience with guided tools, progress insights, shareable updates, and reflection spaces inspired by modern mental wellness apps.
+            </p>
+          </div>
         </div>
 
-        <Tabs defaultValue="plans" className="space-y-4">
-          <TabsList className="grid w-full grid-cols-5 mb-8">
-            <TabsTrigger value="plans">{t('patient.myPlans')}</TabsTrigger>
-            <TabsTrigger value="goals">{t('patient.myGoals')}</TabsTrigger>
-            <TabsTrigger value="actions">{t('patient.myActions')}</TabsTrigger>
-            <TabsTrigger value="chill">{t('patient.chillZone')}</TabsTrigger>
-            <TabsTrigger value="mood">{t('patient.moodLog')}</TabsTrigger>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-3xl border border-white/70 bg-white/80 p-2 shadow-sm">
+            {tabConfig.map((tab) => (
+              <TabsTrigger key={tab.value} value={tab.value} className="rounded-2xl px-4 py-2 data-[state=active]:bg-slate-900 data-[state=active]:text-white">
+                {tab.label}
+              </TabsTrigger>
+            ))}
           </TabsList>
+
+          <TabsContent value="overview">
+            <DashboardOverview
+              fullName={user?.fullName}
+              plans={summary.plans}
+              goals={summary.goals}
+              actions={summary.actions}
+              moodLogs={summary.moodLogs}
+              onNavigate={setActiveTab}
+            />
+          </TabsContent>
+
+          <TabsContent value="toolkit">
+            <MindshiftToolkit />
+          </TabsContent>
 
           <TabsContent value="plans">
             <TreatmentPlans userId={user?.userId} />
@@ -87,12 +140,16 @@ export default function PatientDashboard() {
             <ActionsSection userId={user?.userId} />
           </TabsContent>
 
+          <TabsContent value="mood">
+            <MoodLog userId={user?.userId} />
+          </TabsContent>
+
           <TabsContent value="chill">
             <ChillZone language={i18n.language} />
           </TabsContent>
 
-          <TabsContent value="mood">
-            <MoodLog userId={user?.userId} />
+          <TabsContent value="share">
+            <ShareExperience fullName={user?.fullName} />
           </TabsContent>
         </Tabs>
       </main>
