@@ -26,6 +26,7 @@ export default function ChillZone({ language }: ChillZoneProps) {
   const [resources, setResources] = useState<Resource[]>([])
   const [loading, setLoading] = useState(true)
   const [playing, setPlaying] = useState<number | null>(null)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
 
   useEffect(() => {
     const fetchResources = async () => {

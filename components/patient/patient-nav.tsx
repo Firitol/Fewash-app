@@ -34,8 +34,17 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
   }
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+    <nav className="sticky top-0 z-40 border-b border-white/10 bg-slate-950/75 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 text-white">
+        <button
+          type="button"
+          onClick={() => router.push('/')}
+          className="text-left transition-opacity hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-white/40 rounded-xl"
+        >
+          <p className="text-xs uppercase tracking-[0.3em] text-white/55">Fewash wellness</p>
+          <h1 className="text-xl font-semibold">Relief-Zone</h1>
+        </button>
+
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold text-blue-600">Hakim</h1>
           <span className="text-sm text-gray-600 ml-2">

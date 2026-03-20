@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTranslation } from 'react-i18next'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -35,6 +36,7 @@ const curatedActions = [
 
 export default function ActionsSection({ userId }: ActionsSectionProps) {
   const { t } = useTranslation()
+  const router = useRouter()
   const [actions, setActions] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
