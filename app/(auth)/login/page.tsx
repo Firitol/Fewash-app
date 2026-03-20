@@ -65,7 +65,7 @@ export default function LoginPage() {
 
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold text-blue-600">Relief-Zone</CardTitle>
+          <CardTitle className="text-3xl font-bold text-blue-600">Hakim</CardTitle>
           <CardDescription className="text-lg mt-2">
             {t('auth.login')}
           </CardDescription>
