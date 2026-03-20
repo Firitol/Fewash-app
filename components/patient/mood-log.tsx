@@ -1,16 +1,17 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Slider } from '@/components/ui/slider'
 import { Empty } from '@/components/ui/empty'
-import { Heart } from 'lucide-react'
+import { ChevronRight, Heart, Sparkles } from 'lucide-react'
 
 interface MoodLogProps {
   userId?: number
+  fullName?: string
 }
 
 interface MoodEntry {
@@ -21,7 +22,7 @@ interface MoodEntry {
   created_at: string
 }
 
-export default function MoodLog({ userId }: MoodLogProps) {
+export default function MoodLog({ userId, fullName }: MoodLogProps) {
   const { t } = useTranslation()
   const [moodScore, setMoodScore] = useState(5)
   const [notes, setNotes] = useState('')
@@ -50,17 +51,12 @@ export default function MoodLog({ userId }: MoodLogProps) {
 
   const handleSubmitMood = async () => {
     if (!userId) return
-
     setSubmitting(true)
     try {
       const response = await fetch('/api/mood-logs', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId,
-          moodScore,
-          notes,
-        }),
+        body: JSON.stringify({ userId, moodScore, notes }),
       })
 
       if (response.ok) {
@@ -78,111 +74,95 @@ export default function MoodLog({ userId }: MoodLogProps) {
   const getMoodEmoji = (score: number) => {
     if (score <= 2) return '😢'
     if (score <= 4) return '😕'
-    if (score <= 6) return '😐'
+    if (score <= 6) return '😌'
     if (score <= 8) return '🙂'
     return '😄'
   }
 
-  if (loading) {
-    return <div>{t('common.loading')}</div>
-  }
+  const moodLabel = useMemo(() => {
+    if (moodScore <= 2) return 'I need extra support today.'
+    if (moodScore <= 4) return 'I am feeling stretched.'
+    if (moodScore <= 6) return "I'm feeling ok."
+    if (moodScore <= 8) return 'I feel more steady today.'
+    return 'I feel strong and hopeful.'
+  }, [moodScore])
+
+  if (loading) return <div>{t('common.loading')}</div>
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold mb-4">{t('moodLog.title')}</h2>
+        <h2 className="text-2xl font-bold text-[#0e5fd8]">Daily Check-In</h2>
+        <p className="text-sm text-slate-500">Use the slider to describe your feeling and log your progress.</p>
       </div>
 
-      {/* Mood Submission Form */}
-      <Card className="border-2 border-blue-200 bg-blue-50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Heart className="h-5 w-5 text-red-500" />
-            {t('moodLog.howAreYou')}
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <label className="text-lg font-semibold">{t('moodLog.moodScale')}</label>
-              <div className="text-4xl">{getMoodEmoji(moodScore)}</div>
+      <Card className="overflow-hidden rounded-[2rem] border-0 bg-white shadow-[0_24px_80px_rgba(89,110,255,0.18)]">
+        <CardContent className="space-y-6 p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-xl font-bold text-[#0e5fd8]">How are you today{fullName ? `, ${fullName.split(' ')[0]}` : ''}?</p>
+              <p className="mt-1 text-sm text-slate-500">Track anxiety, mood, and what support you need right now.</p>
             </div>
-            <Slider
-              value={[moodScore]}
-              onValueChange={(value) => setMoodScore(value[0])}
-              min={1}
-              max={10}
-              step={1}
-              className="w-full"
-            />
-            <div className="flex justify-between text-xs text-gray-600">
-              <span>😢 Very Bad</span>
-              <span className="font-semibold text-lg text-blue-600">{moodScore}/10</span>
-              <span>😄 Great</span>
+            <div className="rounded-full border border-[#d9e6ff] p-2 text-[#0e5fd8]">
+              <Heart className="h-4 w-4" />
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">{t('moodLog.notes')}</label>
+          <div className="relative flex flex-col items-center rounded-[2rem] bg-[radial-gradient(circle_at_top,_rgba(236,205,255,0.8),transparent_52%),linear-gradient(180deg,#ffffff_0%,#fbf9ff_100%)] px-4 py-6">
+            <div className="absolute left-2 top-4 text-6xl font-bold tracking-tight text-[#edd8ff] sm:left-4">OK</div>
+            <div className="relative z-10 flex h-40 w-40 items-center justify-center rounded-full bg-[radial-gradient(circle_at_top,#d8c6ff_0%,#8a82ff_55%,#6f66ff_100%)] text-6xl shadow-[0_25px_60px_rgba(129,107,255,0.45)]">
+              {getMoodEmoji(moodScore)}
+            </div>
+            <div className="mt-5 w-full max-w-xs">
+              <Slider value={[moodScore]} onValueChange={(value) => setMoodScore(value[0])} min={1} max={10} step={1} className="w-full" />
+            </div>
+            <Button
+              onClick={handleSubmitMood}
+              disabled={submitting}
+              className="mt-6 h-12 w-full rounded-full bg-white text-[#0e5fd8] shadow-[0_18px_38px_rgba(67,120,255,0.18)] hover:bg-white"
+            >
+              {submitting ? t('common.loading') : `${moodLabel} Submit`}
+              <ChevronRight className="ml-1 h-4 w-4" />
+            </Button>
+          </div>
+
+          <div className="rounded-[1.5rem] border border-[#edf2ff] bg-[#f8fbff] p-4">
+            <p className="mb-2 text-sm font-medium text-[#0e5fd8]">Add a short note</p>
             <Textarea
               placeholder={t('moodLog.notes')}
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
-              className="min-h-[100px]"
+              className="min-h-[96px] rounded-2xl border-0 bg-white shadow-inner"
             />
           </div>
-
-          <Button
-            onClick={handleSubmitMood}
-            disabled={submitting}
-            className="w-full"
-            size="lg"
-          >
-            {submitting ? t('common.loading') : t('moodLog.submit')}
-          </Button>
         </CardContent>
       </Card>
 
-      {/* Mood History */}
-      <div>
-        <h3 className="text-xl font-bold mb-4">{t('moodLog.history')}</h3>
-
+      <div className="space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-[#0e5fd8]">Check-in summary</h3>
+          <span className="text-xs text-slate-400">Recent entries</span>
+        </div>
         {logs.length === 0 ? (
-          <Empty
-            icon="Heart"
-            title={t('moodLog.noLogsFound')}
-            description="No mood entries yet. Start tracking your mood!"
-          />
+          <Empty icon="Heart" title={t('moodLog.noLogsFound')} description="No mood entries yet. Start tracking your mood!" />
         ) : (
-          <div className="space-y-3">
-            {logs.map((log) => (
-              <Card key={log.id} className="hover:shadow-md transition-shadow">
-                <CardContent className="pt-6">
-                  <div className="flex items-start gap-4">
-                    <div className="text-4xl">{getMoodEmoji(log.mood_level)}</div>
-                    <div className="flex-1">
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <p className="font-semibold">
-                            Mood: {log.mood_level}/10
-                          </p>
-                          <p className="text-sm text-gray-600 mt-1">
-                            {new Date(log.created_at).toLocaleDateString()}{' '}
-                            {new Date(log.created_at).toLocaleTimeString()}
-                          </p>
-                        </div>
-                      </div>
-                      {log.notes && (
-                        <p className="text-sm text-gray-700 mt-3 p-3 bg-gray-50 rounded">
-                          {log.notes}
-                        </p>
-                      )}
+          logs.slice(0, 4).map((log) => (
+            <Card key={log.id} className="rounded-[1.75rem] border border-white/70 bg-white/90 shadow-sm">
+              <CardContent className="flex items-start gap-4 p-4">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#eef2ff] text-3xl">{getMoodEmoji(log.mood_level)}</div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between gap-3">
+                    <div>
+                      <p className="font-semibold text-slate-900">{log.mood_level}/10 · {log.mood_description || 'Mood logged'}</p>
+                      <p className="text-xs text-slate-500">{new Date(log.created_at).toLocaleDateString()} · {new Date(log.created_at).toLocaleTimeString()}</p>
                     </div>
+                    <Sparkles className="h-4 w-4 text-violet-500" />
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+                  {log.notes && <p className="mt-3 text-sm leading-6 text-slate-600">{log.notes}</p>}
+                </div>
+              </CardContent>
+            </Card>
+          ))
         )}
       </div>
     </div>

@@ -10,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogOut, Settings, User } from 'lucide-react'
+import { Bell, Globe2, LogOut, Settings, User } from 'lucide-react'
 
 interface PatientNavProps {
   user: any
@@ -43,15 +43,28 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Button variant="outline" size="sm" onClick={onLanguageToggle}>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full border border-white/10 bg-white/10 text-white hover:bg-white/15"
+          >
+            <Bell className="h-4 w-4" />
+          </Button>
+
+          <Button
+            variant="ghost"
+            onClick={onLanguageToggle}
+            className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15"
+          >
+            <Globe2 className="mr-2 h-4 w-4" />
             {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2">
-                <User className="h-5 w-5" />
+              <Button variant="ghost" className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15">
+                <User className="mr-2 h-4 w-4" />
                 <span className="hidden sm:inline">{user?.fullName}</span>
               </Button>
             </DropdownMenuTrigger>

@@ -23,7 +23,6 @@ export default function PatientDashboard() {
   const [summary, setSummary] = useState({ plans: [], goals: [], actions: [], moodLogs: [] } as any)
 
   useEffect(() => {
-    // Check authentication and get user data
     const checkAuth = async () => {
       try {
         const response = await fetch('/api/auth/me')
@@ -78,11 +77,7 @@ export default function PatientDashboard() {
   ]), [t])
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">{t('common.loading')}</div>
-      </div>
-    )
+    return <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white"><div className="text-xl">{t('common.loading')}</div></div>
   }
 
   return (
