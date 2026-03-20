@@ -20,7 +20,7 @@ export default function TreatmentPlans({ userId }: TreatmentPlansProps) {
     const fetchPlans = async () => {
       if (!userId) return
       try {
-        const response = await fetch(`/api/plans?userId=${userId}`)
+        const response = await fetch(`/api/treatment-plans?userId=${userId}`)
         if (response.ok) {
           const data = await response.json()
           setPlans(data)
@@ -40,9 +40,9 @@ export default function TreatmentPlans({ userId }: TreatmentPlansProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <h2 className="text-2xl font-bold mb-4">{t('plan.treatmentPlans')}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-slate-950">{t('plan.treatmentPlans')}</h2>
       </div>
 
       {plans.length === 0 ? (
@@ -54,7 +54,7 @@ export default function TreatmentPlans({ userId }: TreatmentPlansProps) {
       ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {plans.map((plan) => (
-            <Card key={plan.id} className="hover:shadow-lg transition-shadow">
+            <Card key={plan.id} className="overflow-hidden border-white/70 bg-white/90 hover:-translate-y-0.5 hover:shadow-xl transition-all shadow-lg shadow-slate-200/50">
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <div>
