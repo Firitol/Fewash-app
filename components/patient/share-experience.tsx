@@ -97,7 +97,7 @@ export default function ShareExperience({ fullName }: ShareExperienceProps) {
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-xl">
               <Link2 className="h-5 w-5 text-cyan-300" />
-              Share link
+              Share link and invite friends to Hakim
             </CardTitle>
             <CardDescription className="text-slate-300">
               Let a trusted therapist, friend, or accountability partner see your progress snapshot.
