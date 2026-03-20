@@ -158,7 +158,7 @@ export default function DashboardOverview({
       <section className="grid gap-4 lg:grid-cols-[1.2fr,0.8fr]">
         <Card className="border-white/70 bg-white/90 shadow-lg shadow-slate-200/50">
           <CardHeader>
-            <CardTitle className="text-xl">MindShift-style self-help toolkit</CardTitle>
+            <CardTitle className="text-xl">Hakim is self-help toolkit</CardTitle>
             <CardDescription>
               Inspired by common CBT support patterns such as thought journals, fear ladders,
               daily check-ins, and calming routines.
