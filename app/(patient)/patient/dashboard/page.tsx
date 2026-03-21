@@ -927,9 +927,9 @@ export default function PatientDashboard() {
             <Button variant="ghost" size="icon" onClick={() => setShowToolkitSheet(false)}>
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            <SheetTitle>Mindshift Toolkit</SheetTitle>
+            <SheetTitle>Relief zone Toolkit</SheetTitle>
           </div>
-          <MindshiftToolkit />
+          <ReliefzoneToolkit />
         </SheetContent>
       </Sheet>
 
