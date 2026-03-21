@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { Globe2, LogOut, Settings, User, Users } from 'lucide-react'
+import { Globe2, LogOut, Settings, User } from 'lucide-react'
 
 interface TherapistNavProps {
   user: any
@@ -38,23 +38,21 @@ export default function TherapistNav({ user, onLanguageToggle }: TherapistNavPro
     <nav className="sticky top-0 z-30 border-b border-purple-200/60 bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="min-w-0">
-          <Link href="/therapist/dashboard" className="block w-fit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
-            <h1 className="text-xl font-bold transition-opacity hover:opacity-90 sm:text-2xl">Hakim</h1>
-          </Link>
+          <h1 className="text-xl font-bold sm:text-2xl">Hakim</h1>
           <span className="text-xs opacity-90 sm:text-sm">
             {t('therapist.dashboard')}
           </span>
         </div>
 
-        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center sm:justify-end">
+        <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
           <Button
             variant="secondary"
             size="sm"
             onClick={onLanguageToggle}
-            className="w-full gap-2 text-gray-800"
+            className="gap-2 text-gray-800"
           >
             <Globe2 className="h-4 w-4" />
-            <span className="truncate">{i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}</span>
+            {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
           </Button>
 
           <DropdownMenu>
@@ -62,7 +60,6 @@ export default function TherapistNav({ user, onLanguageToggle }: TherapistNavPro
               <Button variant="secondary" className="flex w-full items-center justify-center gap-2 text-gray-800">
                 <User className="h-5 w-5" />
                 <span className="hidden max-w-36 truncate sm:inline">Dr. {user?.fullName}</span>
-                <span className="sm:hidden">Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

@@ -102,7 +102,7 @@ export default function TherapistDashboard() {
       </main>
 
       {isMobile ? (
-        <MobileTabBar items={tabConfig} value={activeTab} onValueChange={setActiveTab} />
+        <MobileTabBar items={tabConfig} value={activeTab} onValueChange={setActiveTab} variant="therapist" />
       ) : null}
     </div>
   )

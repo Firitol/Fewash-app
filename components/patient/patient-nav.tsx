@@ -38,20 +38,17 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
     <nav className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 shadow-sm backdrop-blur">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="min-w-0">
-          <Link href="/patient/dashboard" className="block w-fit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500">
-            <h1 className="text-xl font-bold text-blue-600 transition-colors hover:text-blue-700 sm:text-2xl">Hakim</h1>
-          </Link>
+          <h1 className="text-xl font-bold text-blue-600 sm:text-2xl">Hakim</h1>
           <span className="text-xs text-slate-600 sm:text-sm">
             {t('patient.dashboard')}
           </span>
         </div>
 
-        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto sm:items-center sm:justify-end">
+        <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
           <Button
             variant="outline"
             size="icon"
-            className="w-full rounded-full border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
-            aria-label="Notifications"
+            className="rounded-full border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           >
             <Bell className="h-4 w-4" />
           </Button>
@@ -59,7 +56,7 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
           <Button
             variant="outline"
             onClick={onLanguageToggle}
-            className="w-full rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50"
+            className="rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50"
           >
             <Globe2 className="mr-2 h-4 w-4" />
             <span className="hidden sm:inline">{i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}</span>
@@ -68,10 +65,9 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="w-full rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50">
+              <Button variant="outline" className="rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50">
                 <User className="h-4 w-4 sm:mr-2" />
                 <span className="hidden max-w-32 truncate sm:inline">{user?.fullName}</span>
-                <span className="sm:hidden">Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
