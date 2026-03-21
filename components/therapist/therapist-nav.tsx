@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
@@ -10,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { LogOut, Settings, User } from 'lucide-react'
+import { Globe2, LogOut, Settings, User, Users } from 'lucide-react'
 
 interface TherapistNavProps {
   user: any
@@ -34,33 +35,41 @@ export default function TherapistNav({ user, onLanguageToggle }: TherapistNavPro
   }
 
   return (
-    <nav className="bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold">Relief-Zone</h1>
-          <span className="text-sm ml-2 opacity-90">
+    <nav className="sticky top-0 z-30 border-b border-purple-200/60 bg-gradient-to-r from-purple-600 to-blue-600 text-white shadow-lg">
+      <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+        <div className="min-w-0">
+          <Link href="/therapist/dashboard" className="block w-fit rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">
+            <h1 className="text-xl font-bold transition-opacity hover:opacity-90 sm:text-2xl">Hakim</h1>
+          </Link>
+          <span className="text-xs opacity-90 sm:text-sm">
             {t('therapist.dashboard')}
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <Button 
-            variant="secondary" 
-            size="sm" 
+        <div className="grid w-full grid-cols-2 gap-2 sm:flex sm:w-auto sm:items-center sm:justify-end">
+          <Button
+            variant="secondary"
+            size="sm"
             onClick={onLanguageToggle}
-            className="text-gray-800"
+            className="w-full gap-2 text-gray-800"
           >
-            {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
+            <Globe2 className="h-4 w-4" />
+            <span className="truncate">{i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}</span>
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" className="flex items-center gap-2 text-gray-800">
+              <Button variant="secondary" className="flex w-full items-center justify-center gap-2 text-gray-800">
                 <User className="h-5 w-5" />
-                <span className="hidden sm:inline">Dr. {user?.fullName}</span>
+                <span className="hidden max-w-36 truncate sm:inline">Dr. {user?.fullName}</span>
+                <span className="sm:hidden">Menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => router.push('/therapist/dashboard')}>
+                <Users className="mr-2 h-4 w-4" />
+                <span>{t('therapist.dashboard')}</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push('/therapist/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 <span>{t('therapist.profile')}</span>

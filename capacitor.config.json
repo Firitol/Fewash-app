@@ -1,0 +1,6 @@
+{
+  "appId": "com.hakim.mobile",
+  "appName": "Hakim",
+  "webDir": ".next",
+  "bundledWebRuntime": false
+}
