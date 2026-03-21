@@ -38,7 +38,7 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
     <nav className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 shadow-sm backdrop-blur">
       <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold text-blue-600 sm:text-2xl">Hakim</h1>
+          <h1 className="text-xl font-bold text-blue-600 sm:text-2xl">Relief zone</h1>
           <span className="text-xs text-slate-600 sm:text-sm">
             {t('patient.dashboard')}
           </span>
