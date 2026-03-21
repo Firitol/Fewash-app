@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
@@ -70,6 +71,10 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => router.push('/patient/dashboard')}>
+                <Bell className="mr-2 h-4 w-4" />
+                <span>{t('patient.dashboard')}</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push('/patient/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 <span>{t('patient.profile')}</span>

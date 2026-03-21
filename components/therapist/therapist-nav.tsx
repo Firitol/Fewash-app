@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
@@ -56,12 +57,16 @@ export default function TherapistNav({ user, onLanguageToggle }: TherapistNavPro
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" className="flex items-center gap-2 text-gray-800">
+              <Button variant="secondary" className="flex w-full items-center justify-center gap-2 text-gray-800">
                 <User className="h-5 w-5" />
                 <span className="hidden max-w-36 truncate sm:inline">Dr. {user?.fullName}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => router.push('/therapist/dashboard')}>
+                <Users className="mr-2 h-4 w-4" />
+                <span>{t('therapist.dashboard')}</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push('/therapist/profile')}>
                 <User className="mr-2 h-4 w-4" />
                 <span>{t('therapist.profile')}</span>
