@@ -3,9 +3,10 @@ import { updateActionStatus } from '@/lib/db'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const { status } = await request.json()
 
     if (!status) {
@@ -15,7 +16,7 @@ export async function PATCH(
       )
     }
 
-    const action = await updateActionStatus(parseInt(params.id), status)
+    const action = await updateActionStatus(parseInt(id), status)
     return NextResponse.json(action)
   } catch (error) {
     console.error('Error updating action:', error)
