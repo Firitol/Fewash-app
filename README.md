@@ -23,3 +23,8 @@ npm run mobile:build
 ```
 
 The repository also includes a starter `capacitor.config.json` example you can use after installing Capacitor packages in an unrestricted environment. The mobile assets are text-based so they can be reviewed and pushed without binary-file support.
+
+
+### Deploying on Vercel
+
+This repository is pinned to `pnpm` for cloud deployments. If you deploy on Vercel, let it use the committed `pnpm-lock.yaml` (or the included `vercel.json`) instead of falling back to `npm`, which can fail in this project setup.
