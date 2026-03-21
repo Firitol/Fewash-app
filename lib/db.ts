@@ -321,7 +321,35 @@ export async function getSessionsByPatient(patientId: number) {
     'getSessionsByPatient'
   ) || [];
 }
+// ================= CHILL ZONE =================
 
+export async function getChillZoneResources(
+  language: 'amharic' | 'afan_oromo',
+  type?: string
+) {
+  if (type) {
+    return await runQuery(
+      () => sql`
+        SELECT * FROM chill_zone_resources 
+        WHERE language = ${language} 
+        AND type = ${type} 
+        AND is_active = true
+        ORDER BY created_at DESC
+      `,
+      'getChillZoneResources_with_type'
+    ) || [];
+  }
+
+  return await runQuery(
+    () => sql`
+      SELECT * FROM chill_zone_resources 
+      WHERE language = ${language} 
+      AND is_active = true
+      ORDER BY created_at DESC
+    `,
+    'getChillZoneResources'
+  ) || [];
+}
 // ================= THERAPIST PATIENTS =================
 
 export async function getTherapistPatients(therapistId: number) {
