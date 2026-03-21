@@ -1,6 +1,6 @@
 {
-  "name": "Hakim",
-  "short_name": "Hakim",
+  "name": "Relief zone",
+  "short_name": "Relief zone",
   "description": "A mobile-friendly psychotherapy patient and therapist dashboard.",
   "start_url": "/",
   "display": "standalone",
