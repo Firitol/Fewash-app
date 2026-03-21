@@ -30,6 +30,13 @@ export default function LoginPage() {
         body: JSON.stringify({ email, password }),
       })
 
+      // Check if response is JSON
+      const contentType = response.headers.get('content-type')
+      if (!contentType || !contentType.includes('application/json')) {
+        setError('Server error. Please try again later.')
+        return
+      }
+
       const data = await response.json()
 
       if (!response.ok) {
@@ -44,8 +51,8 @@ export default function LoginPage() {
         router.push('/patient/dashboard')
       }
     } catch (err) {
-      setError(t('common.error'))
-      console.error(err)
+      setError('Connection error. Please check your internet and try again.')
+      console.error('Login error:', err)
     } finally {
       setLoading(false)
     }
