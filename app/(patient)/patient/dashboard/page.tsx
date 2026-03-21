@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useRouter } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useIsMobile } from '@/hooks/use-mobile'
+import MobileTabBar from '@/components/mobile-tab-bar'
 import PatientNav from '@/components/patient/patient-nav'
 import TreatmentPlans from '@/components/patient/treatment-plans'
 import GoalsSection from '@/components/patient/goals-section'
@@ -21,6 +23,7 @@ export default function PatientDashboard() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('overview')
   const [summary, setSummary] = useState({ plans: [], goals: [], actions: [], moodLogs: [] } as any)
+  const isMobile = useIsMobile()
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -84,7 +87,7 @@ export default function PatientDashboard() {
     <div className="min-h-screen bg-[linear-gradient(135deg,#f8fbff_0%,#eef2ff_46%,#fdf2f8_100%)]">
       <PatientNav user={user} onLanguageToggle={toggleLanguage} />
 
-      <main className="container mx-auto space-y-8 px-4 py-8">
+      <main className="container mx-auto space-y-6 px-4 py-6 pb-28 md:space-y-8 md:py-8 md:pb-8">
         <div className="flex flex-col gap-3">
           <div className="inline-flex w-fit items-center rounded-full border border-violet-200 bg-white/80 px-4 py-1 text-sm font-medium text-violet-700 shadow-sm">
             Elevated self-help dashboard
@@ -100,9 +103,9 @@ export default function PatientDashboard() {
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="flex h-auto w-full flex-wrap justify-start gap-2 rounded-3xl border border-white/70 bg-white/80 p-2 shadow-sm">
+          <TabsList className="no-scrollbar flex h-auto w-full justify-start gap-2 overflow-x-auto rounded-3xl border border-white/70 bg-white/80 p-2 shadow-sm md:flex-wrap md:overflow-visible">
             {tabConfig.map((tab) => (
-              <TabsTrigger key={tab.value} value={tab.value} className="rounded-2xl px-4 py-2 data-[state=active]:bg-slate-900 data-[state=active]:text-white">
+              <TabsTrigger key={tab.value} value={tab.value} className="shrink-0 rounded-2xl px-4 py-2 data-[state=active]:bg-slate-900 data-[state=active]:text-white">
                 {tab.label}
               </TabsTrigger>
             ))}
@@ -148,6 +151,10 @@ export default function PatientDashboard() {
           </TabsContent>
         </Tabs>
       </main>
+
+      {isMobile ? (
+        <MobileTabBar items={tabConfig} value={activeTab} onValueChange={setActiveTab} variant="patient" />
+      ) : null}
     </div>
   )
 }

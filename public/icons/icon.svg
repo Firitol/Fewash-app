@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Hakim app icon">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#2563eb"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="heart" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#dbeafe"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
+  <path d="M256 130c-54 0-98 44-98 98 0 86 98 156 98 156s98-70 98-156c0-54-44-98-98-98Z" fill="url(#heart)" opacity="0.95"/>
+  <path d="M181 264h48l27-58 28 96 22-38h25" fill="none" stroke="#2563eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="28"/>
+</svg>

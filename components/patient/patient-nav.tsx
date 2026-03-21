@@ -34,38 +34,39 @@ export default function PatientNav({ user, onLanguageToggle }: PatientNavProps) 
   }
 
   return (
-    <nav className="bg-white shadow-md">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-bold text-blue-600">Hakim</h1>
-          <span className="text-sm text-gray-600 ml-2">
+    <nav className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 shadow-sm backdrop-blur">
+      <div className="container mx-auto flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+        <div className="min-w-0">
+          <h1 className="text-xl font-bold text-blue-600 sm:text-2xl">Hakim</h1>
+          <span className="text-xs text-slate-600 sm:text-sm">
             {t('patient.dashboard')}
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex w-full items-center justify-end gap-2 sm:w-auto">
           <Button
-            variant="ghost"
+            variant="outline"
             size="icon"
-            className="rounded-full border border-white/10 bg-white/10 text-white hover:bg-white/15"
+            className="rounded-full border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
           >
             <Bell className="h-4 w-4" />
           </Button>
 
           <Button
-            variant="ghost"
+            variant="outline"
             onClick={onLanguageToggle}
-            className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15"
+            className="rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50"
           >
             <Globe2 className="mr-2 h-4 w-4" />
-            {i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}
+            <span className="hidden sm:inline">{i18n.language === 'am' ? 'አማርኛ' : 'ኦሮሞ'}</span>
+            <span className="sm:hidden">Lang</span>
           </Button>
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="rounded-full border border-white/10 bg-white/10 px-3 text-white hover:bg-white/15">
-                <User className="mr-2 h-4 w-4" />
-                <span className="hidden sm:inline">{user?.fullName}</span>
+              <Button variant="outline" className="rounded-full border-slate-200 bg-white px-3 text-slate-700 hover:bg-slate-50">
+                <User className="h-4 w-4 sm:mr-2" />
+                <span className="hidden max-w-32 truncate sm:inline">{user?.fullName}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
