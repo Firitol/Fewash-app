@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "mobile:build": "next build",
+    "mobile:sync": "echo Install Capacitor packages, then run npx cap sync",
     "start": "next start",
     "lint": "eslint .",
     "init-db": "node scripts/init-db.js",
