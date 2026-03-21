@@ -5,10 +5,17 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
+    const goalId = searchParams.get('goalId')
+
+    // If goalId is provided, return actions for that specific goal
+    if (goalId) {
+      const actions = await getActionsByGoal(parseInt(goalId))
+      return NextResponse.json(actions)
+    }
 
     if (!userId) {
       return NextResponse.json(
-        { message: 'userId is required' },
+        { message: 'userId or goalId is required' },
         { status: 400 }
       )
     }

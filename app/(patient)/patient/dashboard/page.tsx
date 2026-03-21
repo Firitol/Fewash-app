@@ -516,7 +516,7 @@ export default function PatientDashboard() {
         </CardContent>
       </Card>
 
-      <GoalsSection userId={user?.userId} />
+      <GoalsSection userId={user?.userId} onRefresh={() => user?.userId && fetchData(user.userId)} />
     </div>
   )
 
@@ -665,7 +665,7 @@ export default function PatientDashboard() {
         </CardContent>
       </Card>
 
-      <ActionsSection userId={user?.userId} />
+      <ActionsSection userId={user?.userId} onRefresh={() => user?.userId && fetchData(user.userId)} />
     </div>
   )
 

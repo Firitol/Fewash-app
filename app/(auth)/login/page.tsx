@@ -33,7 +33,13 @@ export default function LoginPage() {
       // Check if response is JSON
       const contentType = response.headers.get('content-type')
       if (!contentType || !contentType.includes('application/json')) {
-        setError('Server error. Please try again later.')
+        // Try to get text to check for specific errors
+        const text = await response.text()
+        if (text.includes('DATABASE_URL')) {
+          setError('Database not configured. Please set up the database connection.')
+        } else {
+          setError('Server error. Please try again later.')
+        }
         return
       }
 
@@ -50,8 +56,12 @@ export default function LoginPage() {
       } else {
         router.push('/patient/dashboard')
       }
-    } catch (err) {
-      setError('Connection error. Please check your internet and try again.')
+    } catch (err: any) {
+      if (err?.message?.includes('DATABASE_URL')) {
+        setError('Database not configured. Please set up the database connection.')
+      } else {
+        setError('Connection error. Please check your internet and try again.')
+      }
       console.error('Login error:', err)
     } finally {
       setLoading(false)
