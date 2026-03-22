@@ -929,7 +929,7 @@ export default function PatientDashboard() {
             </Button>
             <SheetTitle>Relief zone Toolkit</SheetTitle>
           </div>
-          <MindshiftToolkit />
+          <ReliefzoneToolkit />
         </SheetContent>
       </Sheet>
 
